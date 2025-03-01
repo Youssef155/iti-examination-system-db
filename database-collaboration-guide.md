@@ -286,5 +286,106 @@ Your project has two important folders related to database setup:
 1. When setting up a **new** database, schema files create the initial tables.
 2. As the project evolves, migration scripts apply **incremental** changes without resetting everything.
 
-Would you like an example migration script for adding a new feature? 🚀
+---
+
+## **How to Run the Database Setup Script**
+
+Follow these steps to set up your database using the `setup_database.ps1` PowerShell script.
+
+---
+
+### **Prerequisites**
+
+Before running the script, ensure the following:
+
+- You have **Microsoft SQL Server** installed.
+- You have **SQL Server Management Studio (SSMS)** or `sqlcmd` available.
+- PowerShell is installed on your system.
+
+---
+
+### **Steps to Run the Setup Script**
+
+#### **1️⃣ Open PowerShell**
+
+- Press `Win + R`, type `powershell`, and press `Enter`.
+- Alternatively, search for **PowerShell** in the Start menu.
+
+#### **2️⃣ Navigate to the Project Directory**
+
+Use the `cd` command to move to the folder containing the `setup_database.ps1` script:
+
+```powershell
+cd path\to\your\project
+```
+
+*(Replace **`path\to\your\project`** with the actual location of your script.)*
+
+#### **3️⃣ Allow Execution of Scripts (If Required)**
+
+If you haven't run PowerShell scripts before, you may need to enable script execution:
+
+```powershell
+Set-ExecutionPolicy RemoteSigned -Scope Process
+```
+
+*(Select **`Y`** when prompted.)*
+
+#### **4️⃣ Run the Setup Script**
+
+Execute the PowerShell script by running:
+
+```powershell
+.\setup_database.ps1
+```
+
+#### **5️⃣ Verify the Database Creation**
+
+After the script completes:
+
+- Open **SQL Server Management Studio (SSMS)**.
+- Connect to your server (`.` for local, or `localhost`).
+- Check if the database (e.g., `EcommerceDB`) is created.
+- Run:
+  ```sql
+  SELECT name FROM sys.databases;
+  ```
+  To confirm the database exists.
+
+#### **6️⃣ Verify Tables and Seed Data**
+
+Check if tables are created:
+
+```sql
+SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES;
+```
+
+Check if data is inserted:
+
+```sql
+SELECT * FROM Customers;
+```
+
+---
+
+### **Troubleshooting**
+
+| Issue                             | Solution                                                                |
+| --------------------------------- | ----------------------------------------------------------------------- |
+| **PowerShell script not running** | Run `Set-ExecutionPolicy RemoteSigned -Scope Process` before execution. |
+| **Database not appearing**        | Ensure SQL Server is running (`services.msc`) and try again.            |
+| **Permission Denied Errors**      | Run PowerShell as Administrator.                                        |
+| **Tables missing**                | Check the `schema/` folder and rerun the script.                        |
+
+---
+
+### **Final Notes**
+
+- If the database already exists, the script **updates it instead of recreating it**.
+- Make sure `sqlcmd` is installed and available in the system PATH.
+- If any step fails, check the **error messages** and refer to the **Troubleshooting** section.
+
+---
+
+Your database should now be set up and ready to use! 🚀
 
