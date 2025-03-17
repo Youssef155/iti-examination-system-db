@@ -8,3 +8,14 @@ CREATE TABLE INSTRUCTOR (
     branch_id INT,
     FOREIGN KEY (branch_id) REFERENCES BRANCH(branch_id)
 );
+
+create procedure Insert_instructor
+@instructor_name nvarchar(100),
+@email nvarchar(100),
+@specialization nvarchar(100),
+@branch int
+as
+	begin
+		insert into INSTRUCTOR(instructor_name, email, specialization, branch_id)
+		values(@instructor_name, @email, @specialization, @branch)
+	end;
