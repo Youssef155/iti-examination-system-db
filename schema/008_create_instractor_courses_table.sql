@@ -45,3 +45,18 @@ as
 		delete from INSTRUCTOR_COURSE
 		where instructor_id = @instructor_id and course_id = @course_id and branch_id = @branch_id
 		end;
+
+create or alter procedure select_instructorCourse
+@instructor_id int = null,
+@course_id int= null,
+@branch_id int= null
+as
+	begin
+		if(@instructor_id != null or @course_id != null or @branch_id!= null)
+		begin
+		select * from INSTRUCTOR_COURSE
+		where instructor_id = @instructor_id and course_id = @course_id and branch_id = @branch_id
+		end
+		else 
+		select * from INSTRUCTOR_COURSE
+	end;

@@ -38,3 +38,17 @@ as
 		delete from TRACK_COURSE
 		where track_id = @old_track_id and course_id = @old_course_id
 	end;
+
+create or alter procedure select_trackCourse
+@track_id int = null,
+@course_id int= null
+as
+	begin
+		if(@track_id != null or @course_id != null)
+		begin
+		select * from TRACK_COURSE
+		where track_id = @track_id and course_id = @course_id 
+		end
+		else 
+		select * from TRACK_COURSE
+	end;

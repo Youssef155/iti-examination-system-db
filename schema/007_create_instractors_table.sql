@@ -44,3 +44,17 @@ as
 		delete from INSTRUCTOR
 		where instructor_id = @instructor_id
 	end;
+
+create or alter procedure select_instructor
+@instructor_id int = null
+as
+	begin
+		if @instructor_id != null
+		begin
+			select * from INSTRUCTOR where instructor_id = @instructor_id
+		end
+		else
+		begin
+			select * from INSTRUCTOR
+		end
+	end;

@@ -45,3 +45,17 @@ as
 		delete STUDENT
 		where student_id = @id
 	end;
+
+create or alter procedure select_student
+@student_id int = null
+as
+	begin
+		if @student_id != null
+		begin
+			select * from STUDENT where student_id = @student_id
+		end
+		else
+		begin
+			select * from STUDENT
+		end
+	end;

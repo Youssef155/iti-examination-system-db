@@ -39,3 +39,18 @@ create procedure Delete_Course
 			delete from COURSE
 			where course_id = @course_id
 	end;
+
+create OR alter procedure select_coruse
+@course_id int = null 
+as
+	begin
+		if @course_id is not null
+		begin
+		select * from COURSE
+		where course_id = @course_id
+		end
+		else
+		begin
+		select * from COURSE
+		end
+	end;
