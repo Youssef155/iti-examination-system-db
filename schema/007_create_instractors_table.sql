@@ -9,7 +9,7 @@ CREATE TABLE INSTRUCTOR (
     FOREIGN KEY (branch_id) REFERENCES BRANCH(branch_id)
 );
 
-create procedure Insert_instructor
+alter procedure Insert_instructor
 @instructor_name nvarchar(100),
 @email nvarchar(100),
 @specialization nvarchar(100),
@@ -17,5 +17,30 @@ create procedure Insert_instructor
 as
 	begin
 		insert into INSTRUCTOR(instructor_name, email, specialization, branch_id)
-		values(@instructor_name, @email, @specialization, @branch)
+		values(@instructor_name, @email, coalesce(@specialization, 'NA'), @branch)
+	end;
+
+alter procedure update_instructor
+@instructor_id int,
+@instructor_name nvarchar(100),
+@email nvarchar(100),
+@specialization nvarchar(100),
+@branch int
+as
+	begin
+		update INSTRUCTOR
+		set 
+		instructor_name = coalesce(@instructor_name, instructor_name),
+		email = coalesce(@email, email),
+		specialization = coalesce(@specialization, specialization),
+		branch_id = coalesce(@branch, branch_id)
+		where instructor_id = @instructor_id
+	end;
+
+alter procedure delete_instructor
+@instructor_id int
+as
+	begin
+		delete from INSTRUCTOR
+		where instructor_id = @instructor_id
 	end;
