@@ -22,9 +22,9 @@ as
 go
 
 -- insert new track sp
-create or alter proc sp_insert_track @tName NVARCHAR(100), @tDesc NVARCHAR(MAX), @tDuartion int
+create or alter proc sp_insert_track @tName NVARCHAR(100), @tDesc NVARCHAR(MAX), @tDuartion int = -1
 as 
-	if(@tName is not null and @tDesc is not null and @tDuartion is not null)
+	if(@tName != '' and @tDesc != '' and @tDuartion != -1)
 	begin
 		insert into track
 		values(@tName, @tDesc, @tDuartion)
@@ -39,16 +39,16 @@ as
 go
 
 -- update track sp
-create or alter proc sp_update_track @tid int, @tName NVARCHAR(100), @tDesc NVARCHAR(MAX), @tDuartion int
+create or alter proc sp_update_track @tName NVARCHAR(100), @tDesc NVARCHAR(MAX), @tDuartion int = -1, @tid int = -1
 as
-	if @tid is null
+	if @tid = -1
 	begin
         declare @ErrorMessage nvarchar(200) = 'Track ID cannot be null, please enter valid ID.'
         raiserror(@ErrorMessage, 16, 1)
         return
     end
 
-	if(@tName is null and @tDesc is null and @tDuartion is null)
+	if(@tName = '' and @tDesc = '' and @tDuartion = -1)
 	begin
         declare @ParamErrorMessage nvarchar(200) = 'At least one update parameter (Name, duartion, or description) must be provided.'
         raiserror(@ParamErrorMessage, 16, 1)
@@ -57,9 +57,9 @@ as
 
 	update track
     set 
-        track_name = case when @tName is not null then @tName else track_name end,
-        duration = case when @tDuartion is not null then @tDuartion else duration end,
-		description = case when @tDesc is not null then @tDesc else description  end
+        track_name = case when @tName != '' then @tName else track_name end,
+        duration = case when @tDuartion != -1 then @tDuartion else duration end,
+		description = case when @tDesc != '' then @tDesc else description  end
     where track_id = @tid
 
 	-- Check if the update affected any rows
