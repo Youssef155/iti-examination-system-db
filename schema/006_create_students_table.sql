@@ -9,7 +9,7 @@ CREATE TABLE STUDENT (
     FOREIGN KEY (track_id) REFERENCES TRACK(track_id)
 );
 
-alter procedure insert_student
+create or alter procedure insert_student
 @name nvarchar(100),
 @email  nvarchar(100),
 @phone  nvarchar(20),
@@ -20,7 +20,7 @@ as
 		values(@name, coalesce(@email, 'NA'), @phone, @track_id)
 	end;
 
-alter procedure update_Student
+create or alter procedure update_Student
 @id int,
 @name nvarchar(100),
 @email  nvarchar(100),
@@ -37,7 +37,7 @@ as
 		where student_id = @id
 	end;
 
-create procedure delete_student
+create or alter procedure delete_student
 @id int
 
 as

@@ -9,7 +9,7 @@ CREATE TABLE INSTRUCTOR (
     FOREIGN KEY (branch_id) REFERENCES BRANCH(branch_id)
 );
 
-alter procedure Insert_instructor
+create or alter procedure Insert_instructor
 @instructor_name nvarchar(100),
 @email nvarchar(100),
 @specialization nvarchar(100),
@@ -20,7 +20,7 @@ as
 		values(@instructor_name, @email, coalesce(@specialization, 'NA'), @branch)
 	end;
 
-alter procedure update_instructor
+create or alter procedure update_instructor
 @instructor_id int,
 @instructor_name nvarchar(100),
 @email nvarchar(100),
@@ -37,7 +37,7 @@ as
 		where instructor_id = @instructor_id
 	end;
 
-alter procedure delete_instructor
+create or alter procedure delete_instructor
 @instructor_id int
 as
 	begin

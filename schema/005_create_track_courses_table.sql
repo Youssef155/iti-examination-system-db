@@ -8,7 +8,7 @@ CREATE TABLE TRACK_COURSE (
     FOREIGN KEY (course_id) REFERENCES COURSE(course_id)
 );
 
-create procedure insert_trackCourse
+create or alter procedure insert_trackCourse
 @track_id int,
 @course_id int
 as
@@ -17,7 +17,7 @@ as
 		values (@track_id, @course_id)
 	end;
 
-create procedure update_trackCourse
+create or alter procedure update_trackCourse
 @old_track_id int,
 @old_course_id int,
 @track_id int,
@@ -30,7 +30,7 @@ as
 		where track_id = @old_track_id and course_id = @old_course_id
 	end;
 
-create procedure delete_Track_Course
+create or alter procedure delete_Track_Course
 @old_track_id int,
 @old_course_id int
 as
@@ -44,11 +44,25 @@ create or alter procedure select_trackCourse
 @course_id int= null
 as
 	begin
-		if(@track_id != null or @course_id != null)
+		if(@track_id is not null and @course_id is not null)
 		begin
-		select * from TRACK_COURSE
-		where track_id = @track_id and course_id = @course_id 
+		select            
+			t.track_id, 
+            t.track_name, 
+			t.description,
+			t.duration,
+            crs.course_id, 
+            crs.course_name,
+			crs.description,
+			crs.credit_hours
+		from TRACK t
+		join TRACK_COURSE tc on tc.track_id = t.track_id
+		join COURSE crs on c.course_id = tc.course_id
+		where t.track_id = @track_id and c.course_id = @course_id 
 		end
-		else 
-		select * from TRACK_COURSE
+		else
+		begin
+		print 'error:track_id and course_id must be provided';
+		return;
+		end
 	end;
