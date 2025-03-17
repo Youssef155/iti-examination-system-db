@@ -32,7 +32,7 @@ as
 		values(@course_name,coalesce( @description, 'NA'), @credit_hours)
 	end;
 
-create or procedure Delete_Course
+create or alter procedure Delete_Course
 @course_id int
 	as
 		begin 
