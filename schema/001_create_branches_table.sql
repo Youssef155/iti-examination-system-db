@@ -25,31 +25,38 @@ go
 -- insert branch sp
 create or alter proc sp_insert_branch @bName nvarchar(100), @bLocation nvarchar(100)
 as
+	if(@bName = ''  and @bLocation = '')
+	begin
+		declare @ErrorMessage nvarchar(200) = 'All parameters should not be null, please enter valid values.'
+        raiserror(@ErrorMessage, 16, 1)
+        return
+	end
+
 	insert into branch
 	values(@bName, @bLocation)
 go
 
 -- update branch sp
-create or alter proc sp_update_branch @bid int, @bName nvarchar(100), @bLocation nvarchar(100)
+create or alter proc sp_update_branch @bName nvarchar(100), @bLocation nvarchar(100), @bid int = -1
 as 
-	if @bid is null
+	if @bid = -1
     begin
-        declare @ErrorMessage nvarchar(200) = 'Branch ID cannot be NULL. Please provide a valid Branch ID.'
+        declare @ErrorMessage nvarchar(200) = 'Branch ID should be entered. Please provide a valid Branch ID.'
         raiserror(@ErrorMessage, 16, 1)
         return
     end
 
-	if @bName is null and @bLocation is null
+	if (@bName = '' and @bLocation = '')
     begin
-        declare @ParamErrorMessage nvarchar(200) = 'At least one update parameter (BranchName or Location) must be provided.'
+        declare @ParamErrorMessage nvarchar(200) = 'At least one update parameter (Name or Location) must be provided.'
         raiserror(@ParamErrorMessage, 16, 1)
         return
     end
 
 	update branch
     set 
-        branch_name = case when @bName is not null then @bName else branch_name end,
-        location = case when @bLocation is not null then @bLocation else location end
+        branch_name = case when @bName != '' then @bName else branch_name end,
+        location = case when @bLocation != '' then @bLocation else location end
     where branch_id = @bid
     
     -- Check if the update affected any rows
