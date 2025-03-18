@@ -7,7 +7,7 @@ CREATE TABLE COURSE (
     credit_hours INT NOT NULL
 );
 
-create procedure Update_Course
+alter procedure Update_Course
 @course_id int,
 @course_name nvarchar(100),
 @description nvarchar(max),
@@ -15,21 +15,21 @@ create procedure Update_Course
 as
 	begin
 		update COURSE
-			set course_name = @course_name,
-			description = @description,
-			credit_hours = @credit_hours
+			set course_name = coalesce(@course_name, course_name),
+			description =coalesce( @description, description),
+			credit_hours =coalesce( @credit_hours, credit_hours)
 			where 
 				course_id = @course_id;
 	end;
 
-create procedure Insert_Course
+alter procedure Insert_Course
 @course_name nvarchar(100),
 @description nvarchar(max),
 @credit_hours int
 as
 	begin
 		insert into COURSE(@course_name, @description, @credit_hours)
-		values(@course_name, @description, @credit_hours)
+		values(@course_name,coalesce( @description, 'NA'), @credit_hours)
 	end;
 
 create procedure Delete_Course
